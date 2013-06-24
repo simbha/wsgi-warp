@@ -1,7 +1,7 @@
 import json
 
 APACHE_CONFIG = """
-ServerRoot /home/dotcloud/code/apache
+ServerRoot /home/dotcloud
 ErrorLog /home/dotcloud/logs/error_log
 PidFile /home/dotcloud/logs/apache.pid
 
