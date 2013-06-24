@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -x
+
+# Predefined steps for running under dotcloud.
+
+function run_server_on_dotcloud()
+{
+    # Generate the Apache configuration file.
+
+    python -m warpdrive.dotcloud.config > /home/dotcloud/warp-httpd.conf
+
+    # Ensure that LANG settings are correct and not defaulting to ASCII.
+
+    LANG='en_US.UTF-8'
+    LC_ALL='en_US.UTF-8'
+
+    export LANG
+    export LC_ALL
+
+    # Make sure the log directory we are going to use exists.
+
+    test ! -d /home/dotcloud/logs && mkdir /home/dotcloud/logs
+
+    # Test the Apache configuration file so any issues logged.
+
+    /usr/sbin/apache2 -f /home/dotcloud/warp-httpd.conf -t
+    /usr/sbin/apache2 -f /home/dotcloud/warp-httpd.conf -M
+
+    # Now exec Apache, keeping it in the foreground.
+
+    exec /usr/sbin/apache2 -f /home/dotcloud/warp-httpd.conf -DNO_DETACH
+}
+
+# Detect which hosting service we are running on.
+
+WHOAMI=`whoami`
+
+if [ "$WHOAMI" = "dotcloud" ]
+then
+    run_server_on_dotcloud
+else
+    echo "`basename $0`: Unsupported execution environment."
+    exit 1
+fi
