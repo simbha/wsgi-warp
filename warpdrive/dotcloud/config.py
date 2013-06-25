@@ -1,5 +1,5 @@
 import json
-import mod_wsgi_installer
+import wsgi_module
 
 APACHE_CONFIG = """
 ServerRoot /home/dotcloud
@@ -50,6 +50,6 @@ if __name__ == '__main__':
     with open('/home/dotcloud/environment.json') as f:
         environ = json.load(f)
 
-    environ['MOD_WSGI_MODULE_PATH'] = mod_wsgi_installer.module_location()
+    environ['MOD_WSGI_MODULE_PATH'] = wsgi_module.where()
 
     print(APACHE_CONFIG % environ)
