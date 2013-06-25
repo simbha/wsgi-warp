@@ -8,5 +8,5 @@ setup(name = 'warpdrive',
       license = 'BSD',
       url = 'https://github.com/GrahamDumpleton/wsgi-warp',
       packages = ['warpdrive', 'warpdrive.dotcloud'],
-      scripts = ['warp-admin'],
+      scripts = ['warpdrive-admin'],
      )
